@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="How to protect organic traffic during a website redesign or migration with URL mapping, 301 redirects, technical checks and post-launch monitoring.">
+    <title>Website Migration SEO: How to Protect Organic Traffic During a Redesign | Miaoon</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root { --black: #0a0a0a; --dark-gray: #1a1a1a; --medium-gray: #404040; --light-gray: #f5f5f5; --white: #ffffff; --accent: #d2042d; --accent-light: #e8495c; }
+
+        html { scroll-behavior: smooth; }
+
+        body { font-family: "DM Sans", sans-serif; line-height: 1.6; color: var(--black); background: var(--white); overflow-x: hidden; }
+
+        a { color: inherit; }
+
+        header { position: sticky; top: 0; display: flex; justify-content: space-between; align-items: center; padding: 24px 40px; background: rgba(255, 255, 255, 0.92); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(10, 10, 10, 0.08); z-index: 100; }
+
+        .logo { font-family: "Playfair Display", serif; font-size: 26px; font-weight: 700; letter-spacing: -0.5px; }
+
+        header nav { display: flex; gap: 36px; }
+
+        header nav a { text-decoration: none; font-size: 14px; font-weight: 600; letter-spacing: 0.3px; color: var(--medium-gray); transition: color 0.25s; }
+
+        header nav a:hover { color: var(--accent); }
+
+        @media (max-width: 780px) {
+            header nav { display: none; }
+            header { padding: 20px 24px; }
+        }
+
+        .back-bar { max-width: 760px; margin: 48px auto 0; padding: 0 24px; }
+
+        .back-link { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; font-size: 13px; font-weight: 600; letter-spacing: 0.4px; text-transform: uppercase; color: var(--medium-gray); transition: color 0.25s; }
+
+        .back-link:hover { color: var(--accent); }
+
+        .article-head { max-width: 760px; margin: 24px auto 0; padding: 0 24px; }
+
+        .tag { display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--accent); background: rgba(210, 4, 45, 0.08); padding: 6px 14px; border-radius: 20px; margin-bottom: 24px; }
+
+        .article-head h1 { font-family: "Playfair Display", serif; font-size: 52px; font-weight: 700; line-height: 1.12; letter-spacing: -1px; margin-bottom: 22px; }
+
+        .deck { font-size: 19px; color: var(--medium-gray); line-height: 1.6; margin-bottom: 30px; max-width: 640px; }
+
+        .byline { display: flex; align-items: center; gap: 14px; padding: 24px 0; border-top: 1px solid rgba(10, 10, 10, 0.1); border-bottom: 1px solid rgba(10, 10, 10, 0.1); }
+
+        .byline-avatar { width: 42px; height: 42px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--accent-light)); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 15px; flex-shrink: 0; }
+
+        .byline-info p:first-child { font-weight: 700; font-size: 14px; }
+
+        .byline-info p:last-child { font-size: 13px; color: var(--medium-gray); }
+
+        @media (max-width: 600px) {
+            .article-head h1 { font-size: 34px; }
+            .deck { font-size: 17px; }
+        }
+
+        article { max-width: 760px; margin: 0 auto; padding: 48px 24px 40px; }
+
+        article h2 { font-family: "Playfair Display", serif; font-size: 30px; font-weight: 700; letter-spacing: -0.5px; margin: 52px 0 20px; }
+
+        article h3 { font-family: "Playfair Display", serif; font-size: 22px; font-weight: 700; letter-spacing: -0.3px; margin: 36px 0 14px; }
+
+        article p { font-size: 17px; color: rgb(38, 38, 38); line-height: 1.85; margin-bottom: 22px; }
+
+        article p:first-of-type::first-letter { font-family: "Playfair Display", serif; font-size: 64px; font-weight: 700; color: var(--accent); float: left; line-height: 0.85; margin: 8px 10px 0 0; }
+
+        article ul { margin: 0 0 26px 22px; }
+
+        article li { font-size: 17px; color: rgb(38, 38, 38); line-height: 1.8; margin-bottom: 10px; }
+
+        article strong { font-weight: 700; }
+
+        article p a, article li a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; transition: color 0.25s; }
+
+        article p a:hover, article li a:hover { color: var(--accent-light); }
+
+        .case-note { background: var(--light-gray); border-radius: 12px; padding: 28px 30px; margin: 0 0 40px; }
+
+        .case-note ul { margin-bottom: 0; }
+
+        .case-note li:last-child { margin-bottom: 0; }
+
+        .case-note-label { font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; display: block; }
+
+        .signature { max-width: 760px; margin: 20px auto 0; padding: 0 24px 60px; }
+
+        .signature-rule { height: 1px; background: rgba(10, 10, 10, 0.1); margin-bottom: 40px; }
+
+        .cta-block { background: var(--black); border-radius: 16px; padding: 48px 40px; text-align: center; }
+
+        .cta-block h3 { font-family: "Playfair Display", serif; color: var(--white); font-size: 28px; margin-bottom: 14px; }
+
+        .cta-block p { color: rgb(201, 201, 201); font-size: 15px; margin-bottom: 26px; max-width: 460px; margin-left: auto; margin-right: auto; }
+
+        .cta-btn { display: inline-block; background: var(--accent); color: white; text-decoration: none; font-weight: 700; font-size: 14px; padding: 15px 36px; border-radius: 30px; transition: transform 0.25s, background 0.25s; }
+
+        .cta-btn:hover { background: var(--accent-light); transform: translateY(-2px); }
+
+        .related { max-width: 900px; margin: 0 auto; padding: 0 24px 80px; }
+
+        .related-label { font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--medium-gray); margin-bottom: 24px; }
+
+        .related-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+
+        .related-card { display: block; text-decoration: none; padding: 26px; border: 1px solid rgba(10, 10, 10, 0.1); border-radius: 12px; transition: border-color 0.25s, transform 0.25s; }
+
+        .related-card:hover { border-color: var(--accent); transform: translateY(-4px); }
+
+        .related-card span.tag-sm { font-size: 11px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; color: var(--accent); }
+
+        .related-card h4 { font-size: 17px; font-weight: 700; margin: 10px 0 0; line-height: 1.4; }
+
+        @media (max-width: 600px) {
+            .related-grid { grid-template-columns: 1fr; }
+        }
+
+        footer { background: var(--black); color: var(--white); padding: 60px 40px 30px; }
+
+        .footer-content { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 30px; }
+
+        .footer-content a { color: rgb(201, 201, 201); text-decoration: none; font-size: 14px; }
+
+        .footer-content a:hover { color: var(--accent-light); }
+
+        .footer-bottom { max-width: 1200px; margin: 40px auto 0; padding-top: 24px; border-top: 1px solid rgba(255, 255, 255, 0.12); font-size: 13px; color: rgb(153, 153, 153); text-align: center; }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="logo">Miaoon</div>
+        <nav>
+            <a href="https://miaoon.in/#services">Services</a>
+            <a href="https://miaoon.in/#work">Work</a>
+            <a href="https://miaoon.in/#approach">Approach</a>
+            <a href="https://miaoon.in/#team">Team</a>
+            <a href="https://miaoon.in/#insights">Insights</a>
+            <a href="https://miaoon.in/#contact">Contact</a>
+        </nav>
+    </header>
+
+    <div class="back-bar">
+        <a class="back-link" href="https://miaoon.in/#insights">← Back to Insights</a>
+    </div>
+
+    <!-- Article Header -->
+    <div class="article-head">
+        <span class="tag">Technical SEO</span>
+        <h1>Website Migration SEO: How to Protect Organic Traffic During a Redesign</h1>
+        <p class="deck">A redesign should improve your website, not erase years of organic visibility — here is how to plan the move step by step.</p>
+        <div class="byline">
+            <div class="byline-avatar">MT</div>
+            <div class="byline-info">
+                <p>Miaoon Strategy Team</p>
+                <p>Nov 3, 2026 · 9 min read</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Article Body -->
+    <article>
+        <div class="case-note">
+            <span class="case-note-label">Summary</span>
+            <ul>
+                <li>Website migration can involve changes to URLs, domains, hosting, platforms, or website structure.</li>
+                <li>Without SEO planning, a redesign can lead to broken pages, indexing problems, and traffic loss.</li>
+                <li>URL mapping, relevant redirects, technical checks, and monitoring help reduce migration risks.</li>
+                <li>SEO should be involved before the new website goes live, not only after problems appear.</li>
+            </ul>
+        </div>
+
+        <p>A website redesign is often planned to improve appearance, user experience, speed, or business functionality. However, a new design can also change URLs, page layouts, navigation, content, and technical settings. If these changes are not handled carefully, a business may lose organic traffic that took months or years to build.</p>
+
+        <p>This is why SEO needs to be part of the migration process from the beginning.</p>
+
+        <p>At <a href="https://www.miaoon.in/" target="_blank" rel="noopener">Miaoon</a>, businesses can approach website growth with a focus on both visibility and performance. A redesign should improve the website without unnecessarily damaging the organic presence of existing pages.</p>
+
+        <h2>What Is Website Migration in SEO?</h2>
+        <p>Website migration refers to significant changes to a website that can affect how search engines access, understand, or index its pages.</p>
+
+        <p>Common examples include:</p>
+        <ul>
+            <li>Moving from one domain to another.</li>
+            <li>Changing URL structures.</li>
+            <li>Switching a website to a new CMS.</li>
+            <li>Moving from HTTP to HTTPS.</li>
+            <li>Redesigning the website and changing its page hierarchy.</li>
+            <li>Combining multiple websites into one.</li>
+        </ul>
+
+        <p>Google's guide to <a href="https://developers.google.com/search/docs/crawling-indexing/site-move-with-url-changes" target="_blank" rel="noopener">site moves</a> explains how to prepare URL changes and reduce their impact on Search results. Even when the domain stays the same, changes to important page URLs and internal links should be planned carefully.</p>
+
+        <h2>Why Website Redesigns Can Affect Organic Traffic</h2>
+
+        <h3>1. Existing URLs Are Changed</h3>
+        <p>A page that previously ranked well may have a different URL after the redesign. If the old URL is removed without a suitable redirect, visitors and search engines may encounter a not-found error.</p>
+
+        <h3>2. Important Content Is Removed</h3>
+        <p>Sometimes redesign projects shorten pages or remove sections to create a cleaner layout. However, removing useful information can affect the page's ability to answer search queries.</p>
+
+        <p>Review existing content before removing it. Keep useful information and improve its presentation rather than deleting it simply because the new design has less space.</p>
+
+        <h3>3. Search Engine Access Is Blocked</h3>
+        <p>Development websites are sometimes protected using "noindex" settings or robots.txt rules. These settings must be reviewed before launch.</p>
+
+        <p>Google's documentation on <a href="https://developers.google.com/search/docs/crawling-indexing/robots/intro" target="_blank" rel="noopener">robots.txt</a> and <a href="https://developers.google.com/search/docs/crawling-indexing/block-indexing" target="_blank" rel="noopener">noindex directives</a> explains how these controls affect crawling and indexing.</p>
+
+        <h3>4. Internal Links and Sitemaps Are Not Updated</h3>
+        <p>A redesigned website may still contain links to old URLs. The XML sitemap may also include pages that no longer exist.</p>
+
+        <p>Google recommends updating internal links and submitting a sitemap containing the new URLs as part of a planned site move.</p>
+
+        <h2>How to Protect SEO During a Website Migration</h2>
+
+        <h3>Step 1: Record Existing Website Performance</h3>
+        <p>Before making changes, collect a record of important URLs, organic landing pages, search queries, backlinks, and conversions.</p>
+
+        <p>Use <a href="https://search.google.com/search-console/about" target="_blank" rel="noopener">Google Search Console</a> to review clicks, impressions, indexing information, and search performance. Use <a href="https://analytics.google.com/" target="_blank" rel="noopener">Google Analytics</a> to understand which landing pages bring visitors and valuable actions.</p>
+
+        <p>You can also use <a href="https://lookerstudio.google.com/" target="_blank" rel="noopener">Google Looker Studio</a> to organise reporting dashboards and compare performance over time.</p>
+
+        <h3>Step 2: Create an Old-to-New URL Mapping</h3>
+        <p>Prepare a spreadsheet listing important existing URLs and their corresponding new destinations.</p>
+
+        <p>Every old URL that is changing should be reviewed. Redirect it to the most relevant equivalent page, not automatically to the homepage.</p>
+
+        <p>For large websites, crawling tools such as <a href="https://www.screamingfrog.co.uk/seo-spider/" target="_blank" rel="noopener">Screaming Frog</a> and <a href="https://sitebulb.com/" target="_blank" rel="noopener">Sitebulb</a> can help collect URLs and identify technical issues.</p>
+
+        <h3>Step 3: Set Up Relevant 301 Redirects</h3>
+        <p>When a page permanently moves to a new URL, a server-side permanent redirect such as a 301 is generally recommended.</p>
+
+        <p>Avoid redirect chains and irrelevant redirects. Google advises keeping redirects in place for a long period—generally at least one year for a site move—and updating internal links to point directly to the new URLs.</p>
+
+        <p>The <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Status" target="_blank" rel="noopener">HTTP status code reference</a> from MDN can help developers understand the meaning of redirects and other response codes.</p>
+
+        <h3>Step 4: Check Canonical Tags and Indexing Settings</h3>
+        <p>Every important page should have an appropriate canonical URL. Check that canonical tags point to the correct new pages and that important pages are not accidentally marked "noindex".</p>
+
+        <p>Google's <a href="https://developers.google.com/search/docs/crawling-indexing/consolidate-duplicate-urls" target="_blank" rel="noopener">canonical URL guide</a> explains how canonicalisation helps consolidate signals for duplicate or similar URLs.</p>
+
+        <h3>Step 5: Update Internal Links and XML Sitemaps</h3>
+        <p>Replace old internal URLs with their new destinations. Check navigation menus, footer links, blog links, images, and other resources.</p>
+
+        <p>Create and submit an updated XML sitemap using the <a href="https://developers.google.com/search/docs/crawling-indexing/sitemaps/overview" target="_blank" rel="noopener">sitemap guidelines</a>. Make sure it contains the preferred, indexable URLs rather than redirected or blocked pages.</p>
+
+        <h3>Step 6: Test the New Website Before Launch</h3>
+        <p>Do not wait until launch day to discover problems. Test the staging website for:</p>
+        <ul>
+            <li>Broken links and missing pages.</li>
+            <li>Incorrect redirects.</li>
+            <li>Mobile usability.</li>
+            <li>Page loading speed.</li>
+            <li>Canonical tags and indexing directives.</li>
+            <li>Navigation and important forms.</li>
+            <li>Images, scripts, and other resources.</li>
+        </ul>
+
+        <p>Use <a href="https://pagespeed.web.dev/" target="_blank" rel="noopener">PageSpeed Insights</a> and <a href="https://developer.chrome.com/docs/lighthouse/overview/" target="_blank" rel="noopener">Chrome Lighthouse</a> to review performance and user experience.</p>
+
+        <h3>Step 7: Monitor the Website After Launch</h3>
+        <p>Once the migration is live, monitor the old and new URLs. Check indexing, crawl errors, redirects, organic clicks, impressions, and conversions.</p>
+
+        <p>Use the <a href="https://support.google.com/webmasters/answer/9012289" target="_blank" rel="noopener">URL Inspection Tool</a> to investigate individual pages. Review the <a href="https://support.google.com/webmasters/answer/7451001" target="_blank" rel="noopener">Search Console sitemap report</a> to understand how Google processes submitted sitemaps.</p>
+
+        <p>For domain changes, review the <a href="https://support.google.com/webmasters/answer/9370220" target="_blank" rel="noopener">Change of Address guidance</a> and follow the process when applicable.</p>
+
+        <h2>Common Website Migration SEO Mistakes</h2>
+        <ul>
+            <li>Launching without a URL mapping document.</li>
+            <li>Redirecting every deleted page to the homepage.</li>
+            <li>Forgetting to remove staging-site "noindex" settings.</li>
+            <li>Leaving internal links pointed at old URLs.</li>
+            <li>Removing useful content without reviewing its performance.</li>
+            <li>Forgetting to update the sitemap and canonical tags.</li>
+            <li>Stopping monitoring immediately after launch.</li>
+        </ul>
+
+        <p>A migration may involve temporary ranking fluctuations while search engines recrawl and process the changes. The aim is to prevent avoidable errors and monitor recovery rather than assume that every fluctuation means the migration has failed.</p>
+
+        <h2>How Miaoon Can Support SEO Planning During a Redesign</h2>
+        <p>A website redesign should consider search visibility alongside design and development. Businesses need to preserve useful content, plan redirects, review technical settings, and monitor performance after launch.</p>
+
+        <p><a href="https://www.miaoon.in/" target="_blank" rel="noopener">Miaoon</a> can help businesses approach SEO as part of their wider digital strategy, so website improvements are planned with organic visibility and business goals in mind.</p>
+
+        <h2>Frequently Asked Questions</h2>
+        <p><strong>Does a website redesign affect SEO?</strong><br>It can. Changes to URLs, content, navigation, page speed, internal links, and indexing settings may affect search visibility. Careful planning and testing can reduce avoidable problems.</p>
+
+        <p><strong>How long does SEO recovery take after migration?</strong><br>There is no fixed recovery period. Google notes that processing a site move can take weeks or longer, depending on website size, crawling, server performance, and the scale of the changes.</p>
+
+        <p><strong>Should every old URL redirect to the homepage?</strong><br>No. Redirect each old URL to the most relevant equivalent new page. Sending unrelated pages to the homepage can confuse visitors and may be treated as a soft 404.</p>
+
+        <p><strong>Do I need to submit a new sitemap after migration?</strong><br>Yes, when URLs have changed, submit an updated sitemap containing the preferred new URLs. This helps Google discover the new URL structure.</p>
+
+        <p><strong>Should SEO work start before or after the redesign?</strong><br>SEO planning should start before development and launch. It is much easier to preserve URLs, content, and technical settings when SEO requirements are included in the project from the beginning.</p>
+
+        <h2>Conclusion</h2>
+        <p>A website migration is more than a design or development task. It can affect the URLs, content, navigation, and technical foundations that support organic search traffic. Preparing a URL map, implementing relevant redirects, checking indexing settings, updating internal links, and monitoring performance can help reduce migration risks.</p>
+
+        <p>Planning a website redesign? <a href="https://www.miaoon.in/" target="_blank" rel="noopener">Connect with Miaoon</a> to explore an SEO-focused approach that keeps website visibility and business performance in the picture.</p>
+    </article>
+
+    <!-- Signature CTA -->
+    <div class="signature">
+        <div class="signature-rule"></div>
+        <div class="cta-block">
+            <h3>Planning a website redesign?</h3>
+            <p>We help businesses plan redirects, protect rankings, and launch redesigned websites without losing the organic traffic they have built.</p>
+            <a href="mailto:hello@miaoon.in?subject=Website%20Migration%20Inquiry" class="cta-btn">Start a Conversation</a>
+        </div>
+    </div>
+
+    <!-- Related Posts -->
+    <div class="related">
+        <p class="related-label">Continue Reading</p>
+        <div class="related-grid">
+            <a href="https://miaoon.in/blog-conversion-rate-web.html" class="related-card">
+                <span class="tag-sm">Content &amp; SEO</span>
+                <h4>Why Your SEO Strategy Is Failing</h4>
+            </a>
+            <a href="https://miaoon.in/blog-paid-ads-roi.html" class="related-card">
+                <span class="tag-sm">Paid Advertising</span>
+                <h4>Getting More Out of Every Ad Rupee You Spend</h4>
+            </a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="logo" style="color: white;">Miaoon</div>
+            <a href="https://miaoon.in/#services">Services</a>
+            <a href="https://miaoon.in/#work">Work</a>
+            <a href="https://miaoon.in/#insights">Insights</a>
+            <a href="mailto:hello@miaoon.in">hello@miaoon.in</a>
+        </div>
+        <div class="footer-bottom">
+            © 2026 Miaoon. Strategic Digital Agency. All rights reserved.
+        </div>
+    </footer>
+
+</body>
+</html>
