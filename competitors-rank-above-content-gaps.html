@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Why competitors rank above your website and how a content gap analysis helps you find missing topics, unanswered questions and SEO opportunities.">
+    <title>Why Your Competitors Rank Above You and How to Identify the Content Gaps | Miaoon</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root { --black: #0a0a0a; --dark-gray: #1a1a1a; --medium-gray: #404040; --light-gray: #f5f5f5; --white: #ffffff; --accent: #d2042d; --accent-light: #e8495c; }
+
+        html { scroll-behavior: smooth; }
+
+        body { font-family: "DM Sans", sans-serif; line-height: 1.6; color: var(--black); background: var(--white); overflow-x: hidden; }
+
+        a { color: inherit; }
+
+        header { position: sticky; top: 0; display: flex; justify-content: space-between; align-items: center; padding: 24px 40px; background: rgba(255, 255, 255, 0.92); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(10, 10, 10, 0.08); z-index: 100; }
+
+        .logo { font-family: "Playfair Display", serif; font-size: 26px; font-weight: 700; letter-spacing: -0.5px; }
+
+        header nav { display: flex; gap: 36px; }
+
+        header nav a { text-decoration: none; font-size: 14px; font-weight: 600; letter-spacing: 0.3px; color: var(--medium-gray); transition: color 0.25s; }
+
+        header nav a:hover { color: var(--accent); }
+
+        @media (max-width: 780px) {
+            header nav { display: none; }
+            header { padding: 20px 24px; }
+        }
+
+        .back-bar { max-width: 760px; margin: 48px auto 0; padding: 0 24px; }
+
+        .back-link { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; font-size: 13px; font-weight: 600; letter-spacing: 0.4px; text-transform: uppercase; color: var(--medium-gray); transition: color 0.25s; }
+
+        .back-link:hover { color: var(--accent); }
+
+        .article-head { max-width: 760px; margin: 24px auto 0; padding: 0 24px; }
+
+        .tag { display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--accent); background: rgba(210, 4, 45, 0.08); padding: 6px 14px; border-radius: 20px; margin-bottom: 24px; }
+
+        .article-head h1 { font-family: "Playfair Display", serif; font-size: 52px; font-weight: 700; line-height: 1.12; letter-spacing: -1px; margin-bottom: 22px; }
+
+        .deck { font-size: 19px; color: var(--medium-gray); line-height: 1.6; margin-bottom: 30px; max-width: 640px; }
+
+        .byline { display: flex; align-items: center; gap: 14px; padding: 24px 0; border-top: 1px solid rgba(10, 10, 10, 0.1); border-bottom: 1px solid rgba(10, 10, 10, 0.1); }
+
+        .byline-avatar { width: 42px; height: 42px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--accent-light)); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 15px; flex-shrink: 0; }
+
+        .byline-info p:first-child { font-weight: 700; font-size: 14px; }
+
+        .byline-info p:last-child { font-size: 13px; color: var(--medium-gray); }
+
+        @media (max-width: 600px) {
+            .article-head h1 { font-size: 34px; }
+            .deck { font-size: 17px; }
+        }
+
+        article { max-width: 760px; margin: 0 auto; padding: 48px 24px 40px; }
+
+        article h2 { font-family: "Playfair Display", serif; font-size: 30px; font-weight: 700; letter-spacing: -0.5px; margin: 52px 0 20px; }
+
+        article h3 { font-family: "Playfair Display", serif; font-size: 22px; font-weight: 700; letter-spacing: -0.3px; margin: 36px 0 14px; }
+
+        article p { font-size: 17px; color: rgb(38, 38, 38); line-height: 1.85; margin-bottom: 22px; }
+
+        article p:first-of-type::first-letter { font-family: "Playfair Display", serif; font-size: 64px; font-weight: 700; color: var(--accent); float: left; line-height: 0.85; margin: 8px 10px 0 0; }
+
+        article ul { margin: 0 0 26px 22px; }
+
+        article li { font-size: 17px; color: rgb(38, 38, 38); line-height: 1.8; margin-bottom: 10px; }
+
+        article strong { font-weight: 700; }
+
+        article p a, article li a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; transition: color 0.25s; }
+
+        article p a:hover, article li a:hover { color: var(--accent-light); }
+
+        .table-wrap { overflow-x: auto; margin: 0 0 32px; border: 1px solid rgba(10, 10, 10, 0.1); border-radius: 12px; }
+
+        article table { width: 100%; min-width: 560px; border-collapse: collapse; font-size: 15px; }
+
+        article th { text-align: left; background: var(--light-gray); font-size: 12px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: var(--accent); padding: 14px 18px; }
+
+        article td { padding: 14px 18px; border-top: 1px solid rgba(10, 10, 10, 0.08); color: rgb(38, 38, 38); line-height: 1.6; vertical-align: top; }
+
+        article td:first-child { font-weight: 700; }
+
+        .case-note { background: var(--light-gray); border-radius: 12px; padding: 28px 30px; margin: 0 0 40px; }
+
+        .case-note ul { margin-bottom: 0; }
+
+        .case-note li:last-child { margin-bottom: 0; }
+
+        .case-note-label { font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; display: block; }
+
+        .signature { max-width: 760px; margin: 20px auto 0; padding: 0 24px 60px; }
+
+        .signature-rule { height: 1px; background: rgba(10, 10, 10, 0.1); margin-bottom: 40px; }
+
+        .cta-block { background: var(--black); border-radius: 16px; padding: 48px 40px; text-align: center; }
+
+        .cta-block h3 { font-family: "Playfair Display", serif; color: var(--white); font-size: 28px; margin-bottom: 14px; }
+
+        .cta-block p { color: rgb(201, 201, 201); font-size: 15px; margin-bottom: 26px; max-width: 460px; margin-left: auto; margin-right: auto; }
+
+        .cta-btn { display: inline-block; background: var(--accent); color: white; text-decoration: none; font-weight: 700; font-size: 14px; padding: 15px 36px; border-radius: 30px; transition: transform 0.25s, background 0.25s; }
+
+        .cta-btn:hover { background: var(--accent-light); transform: translateY(-2px); }
+
+        .related { max-width: 900px; margin: 0 auto; padding: 0 24px 80px; }
+
+        .related-label { font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--medium-gray); margin-bottom: 24px; }
+
+        .related-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+
+        .related-card { display: block; text-decoration: none; padding: 26px; border: 1px solid rgba(10, 10, 10, 0.1); border-radius: 12px; transition: border-color 0.25s, transform 0.25s; }
+
+        .related-card:hover { border-color: var(--accent); transform: translateY(-4px); }
+
+        .related-card span.tag-sm { font-size: 11px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; color: var(--accent); }
+
+        .related-card h4 { font-size: 17px; font-weight: 700; margin: 10px 0 0; line-height: 1.4; }
+
+        @media (max-width: 600px) {
+            .related-grid { grid-template-columns: 1fr; }
+        }
+
+        footer { background: var(--black); color: var(--white); padding: 60px 40px 30px; }
+
+        .footer-content { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 30px; }
+
+        .footer-content a { color: rgb(201, 201, 201); text-decoration: none; font-size: 14px; }
+
+        .footer-content a:hover { color: var(--accent-light); }
+
+        .footer-bottom { max-width: 1200px; margin: 40px auto 0; padding-top: 24px; border-top: 1px solid rgba(255, 255, 255, 0.12); font-size: 13px; color: rgb(153, 153, 153); text-align: center; }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="logo">Miaoon</div>
+        <nav>
+            <a href="https://miaoon.in/#services">Services</a>
+            <a href="https://miaoon.in/#work">Work</a>
+            <a href="https://miaoon.in/#approach">Approach</a>
+            <a href="https://miaoon.in/#team">Team</a>
+            <a href="https://miaoon.in/#insights">Insights</a>
+            <a href="https://miaoon.in/#contact">Contact</a>
+        </nav>
+    </header>
+
+    <div class="back-bar">
+        <a class="back-link" href="https://miaoon.in/#insights">← Back to Insights</a>
+    </div>
+
+    <!-- Article Header -->
+    <div class="article-head">
+        <span class="tag">Content &amp; SEO</span>
+        <h1>Why Your Competitors Rank Above You and How to Identify the Content Gaps</h1>
+        <p class="deck">Publishing more blogs isn't always the answer — sometimes the problem is what your competitors cover that you don't.</p>
+        <div class="byline">
+            <div class="byline-avatar">MT</div>
+            <div class="byline-info">
+                <p>Miaoon Strategy Team</p>
+                <p>Nov 3, 2026 · 9 min read</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Article Body -->
+    <article>
+        <div class="case-note">
+            <span class="case-note-label">Summary</span>
+            <ul>
+                <li>Your competitors may rank higher because their content better matches what people are searching for.</li>
+                <li>Missing topics, incomplete information, weak page structure, and outdated content can create ranking gaps.</li>
+                <li>Competitor analysis helps businesses identify what their audience needs but their website does not cover.</li>
+                <li>A planned content gap analysis can help improve relevance, search visibility, and organic traffic opportunities.</li>
+            </ul>
+        </div>
+
+        <p>Have you ever searched for a service or topic and found your competitors appearing above your website, even though you offer similar products or services? This can be frustrating, especially when you are regularly publishing blogs and updating website content.</p>
+
+        <p>The problem may not be the number of articles you publish. It could be that your competitors are answering users' questions more completely, covering related topics, or providing information that better matches search intent.</p>
+
+        <p>This is where content gap analysis becomes useful. At <a href="https://www.miaoon.in/" target="_blank" rel="noopener">Miaoon</a>, businesses can approach SEO with a focus on understanding their audience, identifying missing content opportunities, and improving website visibility through a planned strategy.</p>
+
+        <h2>Why Do Your Competitors Rank Above Your Website?</h2>
+        <p>There is rarely one reason why another website ranks higher. Search engines consider multiple signals when deciding which pages are most relevant and useful for a particular search.</p>
+
+        <h3>1. Their Content Matches Search Intent Better</h3>
+        <p>Search intent refers to what a person wants to achieve when entering a query into a search engine.</p>
+
+        <p>For example, someone searching for "best CRM software for small businesses" probably wants comparisons, features, pricing information, and recommendations. A page that only explains what CRM means may not satisfy that requirement.</p>
+
+        <p>Google's <a href="https://developers.google.com/search/docs/fundamentals/creating-helpful-content" target="_blank" rel="noopener">helpful content guidance</a> encourages content that provides useful, reliable information for people. Review whether your pages answer the actual questions behind your target keywords.</p>
+
+        <h3>2. Competitors Cover More Relevant Topics</h3>
+        <p>Your competitors may have separate pages for questions that your website only mentions briefly.</p>
+
+        <p>For example, a digital marketing website may publish content about SEO audits, technical SEO, local SEO, keyword research, and content optimisation. If your website only has a general SEO services page, it may miss several relevant search opportunities.</p>
+
+        <p>Use Google's <a href="https://developers.google.com/search/docs/fundamentals/seo-starter-guide" target="_blank" rel="noopener">SEO starter guide</a> to review the fundamentals of creating useful and understandable website content.</p>
+
+        <h3>3. Their Website Has Stronger Content Organisation</h3>
+        <p>A website with clearly connected service pages, categories, and supporting articles can make it easier for visitors to explore related information.</p>
+
+        <p>Internal links also help search engines discover pages and understand how they connect. Google's guide to <a href="https://developers.google.com/search/docs/crawling-indexing/links-crawlable" target="_blank" rel="noopener">crawlable links</a> explains why links should be accessible and use descriptive anchor text.</p>
+
+        <h3>4. Their Content Is More Detailed and Useful</h3>
+        <p>Longer content does not automatically rank higher. What matters is whether a page provides enough useful information to satisfy the reader.</p>
+
+        <p>Your competitor may include original examples, practical instructions, comparisons, expert insights, or answers to questions that your page overlooks.</p>
+
+        <p>Google's <a href="https://developers.google.com/search/docs/fundamentals/creating-helpful-content" target="_blank" rel="noopener">people-first content guidance</a> recommends providing original value instead of simply rewriting information already available elsewhere.</p>
+
+        <h3>5. Their Website May Have Stronger Authority and Backlinks</h3>
+        <p>External websites linking to your competitors can contribute to their online visibility and help search engines discover their content.</p>
+
+        <p>However, backlink quantity alone does not determine rankings. Relevance, quality, and the overall usefulness of a page also matter.</p>
+
+        <p>You can review competitor backlink profiles with <a href="https://ahrefs.com/" target="_blank" rel="noopener">Ahrefs</a> and <a href="https://www.semrush.com/" target="_blank" rel="noopener">Semrush</a>. These tools can help identify referring websites and potential content opportunities.</p>
+
+        <h2>What Is a Content Gap in SEO?</h2>
+        <p>A content gap is a missing or insufficient piece of information on your website compared with what your target audience needs or what relevant competing pages provide.</p>
+
+        <p>For example, imagine you run a website offering SEO services. Your website has a page about SEO packages, but it does not explain:</p>
+        <ul>
+            <li>How an SEO audit works.</li>
+            <li>What technical SEO includes.</li>
+            <li>How local SEO helps businesses.</li>
+            <li>How SEO performance is measured.</li>
+            <li>How long SEO improvements may take.</li>
+        </ul>
+
+        <p>These missing topics may represent content opportunities. A content gap analysis helps identify them and decide which ones deserve attention.</p>
+
+        <h2>How to Identify Content Gaps on Your Website</h2>
+
+        <h3>1. Identify Your Main Competitors</h3>
+        <p>Start by searching for your primary business keywords on Google. Note the websites that repeatedly appear for relevant searches.</p>
+
+        <p>Focus on businesses competing for the same audience and search intent, not just websites operating in your industry.</p>
+
+        <p>Create a shortlist of three to five competitors. You can also use <a href="https://moz.com/" target="_blank" rel="noopener">Moz</a> to explore SEO research and competitor analysis concepts.</p>
+
+        <h3>2. Compare the Keywords They Target</h3>
+        <p>Check which relevant search terms your competitors rank for but your website does not.</p>
+
+        <p>Tools such as <a href="https://www.semrush.com/features/keyword-gap/" target="_blank" rel="noopener">Semrush Keyword Gap</a> and <a href="https://ahrefs.com/content-gap" target="_blank" rel="noopener">Ahrefs Content Gap</a> can help compare keyword visibility across websites.</p>
+
+        <p>Look for meaningful opportunities rather than collecting hundreds of unrelated keywords. A keyword should connect with your services, audience, and business objectives.</p>
+
+        <h3>3. Review Your Existing Search Performance</h3>
+        <p>Open <a href="https://search.google.com/search-console/about" target="_blank" rel="noopener">Google Search Console</a> and review the queries bringing visitors to your website.</p>
+
+        <p>Look for keywords where your pages receive impressions but relatively few clicks. These may indicate opportunities to improve titles, descriptions, content relevance, or the page's search intent.</p>
+
+        <p>Use <a href="https://analytics.google.com/" target="_blank" rel="noopener">Google Analytics</a> to understand which landing pages attract visitors and whether those visits lead to useful actions.</p>
+
+        <h3>4. Find Questions Your Content Does Not Answer</h3>
+        <p>People often search using questions rather than exact service names. Reviewing these questions can reveal topics that deserve dedicated explanations.</p>
+
+        <p><a href="https://answerthepublic.com/" target="_blank" rel="noopener">AnswerThePublic</a> can help discover question-based searches around a topic. You can also explore <a href="https://alsoasked.com/" target="_blank" rel="noopener">AlsoAsked</a> to find related questions and understand how search topics connect.</p>
+
+        <p>For broader audience interest, <a href="https://trends.google.com/trends/" target="_blank" rel="noopener">Google Trends</a> can help identify changing search interest and seasonal patterns.</p>
+
+        <h3>5. Compare the Actual Search Results</h3>
+        <p>Search your target keyword and review the pages appearing on the first page.</p>
+
+        <p>Pay attention to:</p>
+        <ul>
+            <li>The type of content ranking.</li>
+            <li>Questions covered by competing pages.</li>
+            <li>Examples and information they provide.</li>
+            <li>Whether the results are guides, service pages, comparisons, or product pages.</li>
+            <li>What useful information your own page is missing.</li>
+        </ul>
+
+        <p>Do not copy competitor content. Instead, identify what readers still need and create a more useful resource.</p>
+
+        <p>Resources such as <a href="https://searchengineland.com/" target="_blank" rel="noopener">Search Engine Land</a> and <a href="https://www.searchenginejournal.com/" target="_blank" rel="noopener">Search Engine Journal</a> can help you understand SEO practices and industry developments.</p>
+
+        <h2>How to Turn Content Gaps Into an SEO Strategy</h2>
+        <p>Finding gaps is only the first step. The next task is deciding which opportunities deserve your time and resources.</p>
+
+        <h3>Prioritise Topics Based on Business Relevance</h3>
+        <p>Not every keyword is valuable to your business. A topic may have high search volume but attract visitors who are unlikely to become customers.</p>
+
+        <p>Prioritise topics based on relevance to your services, audience needs, search intent, competition, and potential business value.</p>
+
+        <p>Use <a href="https://ads.google.com/home/tools/keyword-planner/" target="_blank" rel="noopener">Google Keyword Planner</a> to research keyword ideas and search estimates. Treat these estimates as planning information rather than guaranteed organic traffic.</p>
+
+        <h3>Improve Existing Pages Before Creating New Ones</h3>
+        <p>Sometimes the gap is not a completely missing article. Your existing page may simply need more useful information.</p>
+
+        <p>Add relevant examples, explain important subtopics, improve headings, update outdated information, and connect related pages through internal links.</p>
+
+        <p>You can also use <a href="https://www.screamingfrog.co.uk/seo-spider/" target="_blank" rel="noopener">Screaming Frog SEO Spider</a> to review website structure, internal links, page titles, and technical issues.</p>
+
+        <h3>Build Supporting Content Around Important Topics</h3>
+        <p>Create related articles that support your main service pages. For example, a website offering local SEO services could publish guides about Google Business Profile optimisation, local keyword research, location pages, and review management.</p>
+
+        <p>This creates a more organised content structure and gives visitors useful information at different stages of their decision-making process.</p>
+
+        <h3>Review Technical and Page Experience Issues</h3>
+        <p>Content improvements may not be enough if important pages load slowly, contain broken links, or have accessibility problems.</p>
+
+        <p>Use <a href="https://pagespeed.web.dev/" target="_blank" rel="noopener">PageSpeed Insights</a> to review page performance and <a href="https://web.dev/articles/vitals" target="_blank" rel="noopener">Core Web Vitals</a> to understand important user-experience measurements.</p>
+
+        <p>For additional accessibility guidance, refer to the <a href="https://www.w3.org/WAI/standards-guidelines/wcag/" target="_blank" rel="noopener">W3C WCAG guidelines</a>.</p>
+
+        <h2>How to Measure the Results of Content Gap Improvements</h2>
+        <p>After publishing or updating content, monitor its performance over time.</p>
+
+        <p>Track organic clicks, impressions, relevant search queries, landing-page engagement, and enquiries. Compare performance with an earlier period while accounting for seasonality and other changes.</p>
+
+        <p>You can use <a href="https://search.google.com/search-console/about" target="_blank" rel="noopener">Google Search Console</a> to monitor search visibility and <a href="https://lookerstudio.google.com/" target="_blank" rel="noopener">Looker Studio</a> to organise performance dashboards.</p>
+
+        <p>Remember that publishing a new article does not guarantee higher rankings. The goal is to provide genuinely useful information and measure whether the improvements support your audience and business objectives.</p>
+
+        <h2>How Miaoon Helps Businesses Identify Content Opportunities</h2>
+        <p>Competitor analysis should not be limited to checking who ranks first on Google. Businesses need to understand why competing pages are useful, which topics their own websites are missing, and how content can support their services.</p>
+
+        <p><a href="https://www.miaoon.in/" target="_blank" rel="noopener">Miaoon</a> helps businesses explore SEO and digital marketing strategies that focus on website visibility, content planning, and business growth. By identifying relevant content gaps and improving existing pages, businesses can build a more useful website for both visitors and search engines.</p>
+
+        <h2>Frequently Asked Questions</h2>
+        <p><strong>Why are my competitors ranking higher than my website?</strong><br>Your competitors may have content that better matches search intent, more complete topic coverage, stronger website organisation, or other competitive advantages. Review the specific search results and compare the pages rather than assuming one SEO factor explains the difference.</p>
+
+        <p><strong>What is content gap analysis in SEO?</strong><br>Content gap analysis compares your website's content with relevant audience needs and competing pages. It helps identify missing topics, unanswered questions, and opportunities to improve existing content.</p>
+
+        <p><strong>Which tools can help identify content gaps?</strong><br>Google Search Console, Google Keyword Planner, Semrush, Ahrefs, Moz, AnswerThePublic, and AlsoAsked can help with different parts of content gap research. The right combination depends on your website and budget.</p>
+
+        <p><strong>Should I create new blogs for every missing keyword?</strong><br>No. Some keywords belong on existing service pages or articles. Group related search terms by intent and create separate pages only when they provide a genuinely different and useful experience.</p>
+
+        <p><strong>How often should I perform a content gap analysis?</strong><br>A quarterly review is a practical starting point for many businesses. Websites in competitive or fast-changing industries may benefit from more frequent reviews.</p>
+
+        <p><strong>Does fixing content gaps guarantee better rankings?</strong><br>No. Content gap improvements can make your website more relevant and useful, but rankings depend on many factors. Monitor performance and continue improving pages based on real audience needs.</p>
+
+        <h2>Conclusion</h2>
+        <p>If your competitors consistently appear above your website, publishing more blogs may not be the only solution. You need to understand what their pages offer, what your audience is searching for, and which important topics your website has not covered properly.</p>
+
+        <p>A well-planned content gap analysis can help identify these opportunities, improve existing pages, and build a stronger content strategy over time.</p>
+
+        <p>If you want to understand where your website is missing valuable content opportunities, <a href="https://www.miaoon.in/" target="_blank" rel="noopener">connect with Miaoon</a> and explore an SEO strategy focused on meaningful website growth.</p>
+    </article>
+
+    <!-- Signature CTA -->
+    <div class="signature">
+        <div class="signature-rule"></div>
+        <div class="cta-block">
+            <h3>Competitors outranking you?</h3>
+            <p>We help businesses find the content gaps holding them back and turn them into a clear, planned SEO strategy.</p>
+            <a href="mailto:hello@miaoon.in?subject=Content%20Gap%20Inquiry" class="cta-btn">Start a Conversation</a>
+        </div>
+    </div>
+
+    <!-- Related Posts -->
+    <div class="related">
+        <p class="related-label">Continue Reading</p>
+        <div class="related-grid">
+            <a href="https://miaoon.in/blog-conversion-rate-web.html" class="related-card">
+                <span class="tag-sm">Content &amp; SEO</span>
+                <h4>Why Your SEO Strategy Is Failing</h4>
+            </a>
+            <a href="https://miaoon.in/blog-paid-ads-roi.html" class="related-card">
+                <span class="tag-sm">Paid Advertising</span>
+                <h4>Getting More Out of Every Ad Rupee You Spend</h4>
+            </a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="logo" style="color: white;">Miaoon</div>
+            <a href="https://miaoon.in/#services">Services</a>
+            <a href="https://miaoon.in/#work">Work</a>
+            <a href="https://miaoon.in/#insights">Insights</a>
+            <a href="mailto:hello@miaoon.in">hello@miaoon.in</a>
+        </div>
+        <div class="footer-bottom">
+            © 2026 Miaoon. Strategic Digital Agency. All rights reserved.
+        </div>
+    </footer>
+
+</body>
+</html>
