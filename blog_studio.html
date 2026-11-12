@@ -146,11 +146,13 @@ const $=i=>document.getElementById(i),F=['title','slug','kw','stitle','sdesc','c
 
 /* ===== MIAOON.IN DIRECT GITHUB CMS CONFIG ===== */
 const CONFIG={
-  owner:'insaankhan-cyber', // UPDATE: your GitHub username (e.g., 'Insaankhan')
-  repo:'miaoon-website',        // UPDATE: your GitHub repository name (e.g., 'miaoon-website')
-  branch:'main',                // Main branch deployed on Render
-  folder:'blog',                // Subfolder for blog post HTML files
-  prefix:'blog-',
+  owner:'insaankhan-cyber',
+  repo:'miaoon-website',
+  branch:'main',
+  folder:'',
+  prefix:'',
+  token:'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',
+  publishPassword:'miaoon2026', // Change this publish password anytime
   site:'https://miaoon.in',
   name:'Miaoon',
   gtm:'GTM-PHGGWJQX',
@@ -493,34 +495,40 @@ run();msg('Auto-design done: '+(A.join(', ')||'nothing to change'))}
 const ghHint=m=>/bad credentials/i.test(m)?'the GitHub token stored is invalid or expired ('+m+')':/not found/i.test(m)?'repo, folder or branch not found, or token has no access ('+m+')':/not accessible|forbidden|permission/i.test(m)?'token needs Contents: Read and write permissions ('+m+')':m;
 
 /* direct github client */
+let pubUnlocked=false;
+function verifyPublishPassword(){
+  if(pubUnlocked||!S.publishPassword)return true;
+  const pw=prompt('Enter publish password:');
+  if(pw===null)return false;
+  if(pw.trim()===S.publishPassword){pubUnlocked=true;return true}
+  throw new Error('Incorrect publish password.');
+}
+
 function getGitHubToken(){
-  let token=localStorage.getItem('mbs_gh_pat');
-  if(!token){
-    token=prompt('Enter your GitHub Personal Access Token (repo contents read/write scope):');
-    if(token){token=token.trim();localStorage.setItem('mbs_gh_pat',token)}
-  }
-  return token;
+  return S.token;
 }
 
 async function api(body){
+  if(body.action==='publish'&&!verifyPublishPassword())throw new Error('Publish cancelled.');
   const token=getGitHubToken();
-  if(!token)throw new Error('GitHub access token is required to publish.');
+  if(!token)throw new Error('GitHub access token is missing in CONFIG.');
   const headers={'Authorization':`token ${token}`,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'};
 
   if(body.action==='list'){
-    const listUrl=`https://api.github.com/repos/${S.owner}/${S.repo}/contents/${S.folder}?ref=${S.branch}`;
+    const folderPath=S.folder?`/${S.folder.replace(/^\/|\/$/g,'')}`:'';
+    const listUrl=`https://api.github.com/repos/${S.owner}/${S.repo}/contents${folderPath}?ref=${S.branch}`;
     const res=await fetch(listUrl,{headers});
     if(!res.ok){
-      if(res.status===401){localStorage.removeItem('mbs_gh_pat');throw new Error('Invalid GitHub token. Please enter a valid token.')}
       throw new Error(`Failed to list repo files (${res.status})`);
     }
     const data=await res.json();
-    const files=Array.isArray(data)?data.filter(f=>f.type==='file'&&f.name.endsWith('.html')).map(f=>({name:f.name,sha:f.sha})):[];
+    const ignore=['index.html','blog-studio.html','404.html','about.html','contact.html','services.html','work.html'];
+    const files=Array.isArray(data)?data.filter(f=>f.type==='file'&&f.name.endsWith('.html')&&!ignore.includes(f.name)).map(f=>({name:f.name,sha:f.sha})):[];
     return {files};
   }
 
   if(body.action==='read'){
-    const filePath=`${S.folder}/${body.name}`.replace(/^\//,'');
+    const filePath=(S.folder?`${S.folder.replace(/^\/|\/$/g,'')}/${body.name}`:body.name);
     const readUrl=`https://api.github.com/repos/${S.owner}/${S.repo}/contents/${filePath}?ref=${S.branch}`;
     const res=await fetch(readUrl,{headers});
     if(!res.ok)throw new Error(`Could not load file: ${body.name}`);
@@ -530,7 +538,7 @@ async function api(body){
   }
 
   if(body.action==='publish'){
-    const filePath=`${S.folder}/${body.name}`.replace(/^\//,'');
+    const filePath=(S.folder?`${S.folder.replace(/^\/|\/$/g,'')}/${body.name}`:body.name);
     const fileUrl=`https://api.github.com/repos/${S.owner}/${S.repo}/contents/${filePath}`;
     let existingSha=null;
     try{
@@ -727,6 +735,7 @@ $('out').onclick=()=>logout('You have logged out.');
 
 ['click','keydown','input'].forEach(ev=>addEventListener(ev,()=>{last=Date.now()},{passive:true}));
 setInterval(()=>{if(!cur)return;if(Date.now()-last>IDLE){logout('You were logged out after 60 minutes of inactivity.');return}fresh()},30000);
+try{localStorage.removeItem('mbs_gh_pat')}catch(e){}
 (function boot(){let s=null;try{s=JSON.parse(sessionStorage.getItem(SK)||'null')}catch(e){}
 const u=s&&rd().find(x=>x.id===s.id&&x.active!==false);u?enter(u,true):showGate()})();
 </script></body></html>
