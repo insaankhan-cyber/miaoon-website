@@ -79,7 +79,7 @@ input[type=checkbox]{width:auto;margin-right:6px}
 .ubar{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;align-items:center}.ubar .sp{flex:1}
 @media(max-width:600px){.ugrid{grid-template-columns:1fr}#who{display:none}}
 </style></head><body>
-<div class="top"><b>Blog <i>Studio</i></b><span id="ver" style="font-size:11px;color:#8a8a8a;white-space:nowrap" title="Version of this page">v10 &middot; GitHub Direct</span>
+<div class="top"><b>Blog <i>Studio</i></b><span id="ver" style="font-size:11px;color:#8a8a8a;white-space:nowrap" title="Version of this page">v11 &middot; GitHub Direct</span>
 <nav class="jump" id="jump" aria-label="Jump to section"><a href="#sec-write" data-f="title" data-tip="Jump to Write" data-key="{A}1">Write</a><a href="#sec-seo" data-f="kw" data-tip="Jump to SEO" data-key="{A}2">SEO</a><a href="#sec-details" data-f="cat" data-tip="Jump to Post details" data-key="{A}3">Post details</a><a href="#sec-cta" data-f="ctah" data-tip="Jump to CTA block" data-key="{A}4">CTA block</a><a href="#sec-related" data-f="r1t" data-tip="Jump to Related posts" data-key="{A}5">Related posts</a><a href="#sec-checks" data-tip="Jump to Checks" data-key="{A}6">Checks</a></nav>
 <div class="acts"><span id="msg" aria-live="polite"></span><button id="auto" class="pri" data-tip="Auto-design the pasted blog" data-key="{A}A">Auto-design</button><button id="open" data-tip="Open a published post to edit" data-key="{A}O">Open</button><button id="new" data-tip="Start a new post">New</button><button id="dl" data-tip="Download as HTML file">Download</button><button id="cp" data-tip="Copy the page HTML">Copy HTML</button><button id="help" aria-haspopup="true" aria-expanded="false" data-tip="Keyboard shortcuts" data-key="{A}K">Shortcuts &#9662;</button><button id="pub" class="pri" data-tip="Publish to the blog" data-key="{C}↵">Publish</button><span id="who"></span><button id="users" hidden data-tip="Add, edit or remove users">Users</button><button id="acct" data-tip="Change your password">Account</button><button id="out" data-tip="Log out of Blog Studio">Log out</button></div>
 <div class="ddp" id="ddp" hidden role="menu" aria-label="Keyboard shortcuts">
@@ -605,7 +605,7 @@ $('new').onclick=()=>{if(confirm('Clear the current draft?')){localStorage.remov
 $('pub').onclick=async()=>{if(!need())return;
 const C=checks(),bad=[...C[1],...C[2],...C[3]].filter(x=>x[0]==='r').length;if(bad&&!confirm(bad+' red checks remain. Publish anyway?'))return;
 if(!$('r1t').value.trim()&&!$('r2t').value.trim())await autoRelated();
-msg('Publishing directly to GitHub...');try{const r=await api({action:'publish',name:file(),html:build()});msg((r.updated?'Updated. ':'Published. ')+'Render will deploy shortly: '+pageUrl(file()))}catch(e){msg('Failed: '+ghHint(e.message)+(window._lastTok?' [token received: '+window._lastTok+']':''),1)}};
+msg('Publishing directly to GitHub...');try{const r=await api({action:'publish',name:file(),html:build()});msg((r.updated?'Updated. ':'Published. ')+'Render will deploy shortly: '+pageUrl(file()))}catch(e){{const full='Failed: '+ghHint(e.message)+(window._lastTok?' [token received: '+window._lastTok+']':'');msg(full,1);alert(full)}}};
 
 /* open published post */
 const odlg=$('odlg'),olist=$('olist');let oall=[];
