@@ -151,7 +151,7 @@ const CONFIG={
   branch:'main',
   folder:'',
   prefix:'',
-  token:'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', // never paste a token here; Blog Studio asks for it at publish time
+  token:'', // never paste a token here; Blog Studio asks for it at publish time
   publishPassword:'miaoon2026', // Change this publish password anytime
   site:'https://miaoon.in',
   name:'Miaoon',
@@ -492,6 +492,7 @@ if(!$('sdesc').value.trim()&&fp){$('sdesc').value=cut(tx(fp));A.push('meta descr
 if(!$('exc').value.trim()&&$('sdesc').value.trim()){$('exc').value=$('sdesc').value;A.push('deck')}
 ed.innerHTML=d.innerHTML||'<p><br></p>';if(!lock||!$('slug').value)$('slug').value=slugify($('title').value);
 run();msg('Auto-design done: '+(A.join(', ')||'nothing to change'))}
+const tokInfo=()=>{let t='';try{t=sessionStorage.getItem('mbs_gh_tok')||''}catch(e){}return t?' [token: '+t.slice(0,11)+'..., '+t.length+' chars]':''};
 const ghHint=m=>/bad credentials/i.test(m)?'the GitHub token stored is invalid or expired ('+m+')':/not found/i.test(m)?'repo, folder or branch not found, or token has no access ('+m+')':/not accessible|forbidden|permission/i.test(m)?'token needs Contents: Read and write permissions ('+m+')':m;
 
 /* direct github client */
@@ -508,7 +509,7 @@ function getGitHubToken(){
   let t='';
   try{t=sessionStorage.getItem('mbs_gh_tok')||''}catch(e){}
   if(!t){
-    t=(prompt('Enter your GitHub token (fine-grained, Contents: Read and write, miaoon-website only):')||'').trim();
+    t=(prompt('Enter your GitHub token (fine-grained, Contents: Read and write, miaoon-website only):')||'').replace(/^\s*bearer\s+/i,'').replace(/[^A-Za-z0-9_]/g,'');
     if(t){try{sessionStorage.setItem('mbs_gh_tok',t)}catch(e){}}
   }
   return t;
@@ -525,7 +526,7 @@ async function api(body){
     const listUrl=`https://api.github.com/repos/${S.owner}/${S.repo}/contents${folderPath}?ref=${S.branch}`;
     const res=await fetch(listUrl,{headers});
     if(!res.ok){
-      if(res.status===401){try{sessionStorage.removeItem('mbs_gh_tok')}catch(e){}}
+      if(res.status===401){window._lastTok=token.slice(0,11)+'..., '+token.length+' chars';try{sessionStorage.removeItem('mbs_gh_tok')}catch(e){}}
       throw new Error(res.status===401?'Bad credentials':`Failed to list repo files (${res.status})`);
     }
     const data=await res.json();
@@ -567,7 +568,7 @@ async function api(body){
     const pubRes=await fetch(fileUrl,{method:'PUT',headers,body:JSON.stringify(payload)});
     if(!pubRes.ok){
       const errData=await pubRes.json().catch(()=>({}));
-      if(pubRes.status===401){try{sessionStorage.removeItem('mbs_gh_tok')}catch(e){}}
+      if(pubRes.status===401){window._lastTok=token.slice(0,11)+'..., '+token.length+' chars';try{sessionStorage.removeItem('mbs_gh_tok')}catch(e){}}
       throw new Error(errData.message||`GitHub publish failed (${pubRes.status})`);
     }
     return {updated:!!existingSha};
@@ -604,7 +605,7 @@ $('new').onclick=()=>{if(confirm('Clear the current draft?')){localStorage.remov
 $('pub').onclick=async()=>{if(!need())return;
 const C=checks(),bad=[...C[1],...C[2],...C[3]].filter(x=>x[0]==='r').length;if(bad&&!confirm(bad+' red checks remain. Publish anyway?'))return;
 if(!$('r1t').value.trim()&&!$('r2t').value.trim())await autoRelated();
-msg('Publishing directly to GitHub...');try{const r=await api({action:'publish',name:file(),html:build()});msg((r.updated?'Updated. ':'Published. ')+'Render will deploy shortly: '+pageUrl(file()))}catch(e){msg('Failed: '+ghHint(e.message),1)}};
+msg('Publishing directly to GitHub...');try{const r=await api({action:'publish',name:file(),html:build()});msg((r.updated?'Updated. ':'Published. ')+'Render will deploy shortly: '+pageUrl(file()))}catch(e){msg('Failed: '+ghHint(e.message)+(window._lastTok?' [token received: '+window._lastTok+']':''),1)}};
 
 /* open published post */
 const odlg=$('odlg'),olist=$('olist');let oall=[];
