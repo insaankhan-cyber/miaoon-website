@@ -512,7 +512,7 @@ async function api(body){
   if(body.action==='publish'&&!verifyPublishPassword())throw new Error('Publish cancelled.');
   const token=getGitHubToken();
   if(!token)throw new Error('GitHub access token is missing in CONFIG.');
-  const headers={'Authorization':`token ${token}`,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'};
+  const headers={'Authorization':`Bearer ${token}`,'Accept':'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28','Content-Type':'application/json'};
 
   if(body.action==='list'){
     const folderPath=S.folder?`/${S.folder.replace(/^\/|\/$/g,'')}`:'';
