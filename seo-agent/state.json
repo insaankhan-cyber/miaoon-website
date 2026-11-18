@@ -1,10 +1,41 @@
 {
   "lastAudit": "2026-11-17T15:18:57.172Z",
-  "lastKeywords": null,
+  "lastKeywords": "2026-11-18T05:16:15.177Z",
   "lastPost": null,
   "pausedUntil": null,
   "lastScore": 100,
   "pending": null,
-  "topicQueue": [],
+  "topicQueue": [
+    {
+      "keyword": "what is creative brief in advertising",
+      "title": "Crafting a Winning Creative Brief for Advertising Campaigns",
+      "slug": "creative-brief-advertising",
+      "angle": "Guide agencies on building concise, insight‑driven briefs that align creative teams and clients for better results"
+    },
+    {
+      "keyword": "agency pricing models",
+      "title": "Understanding Different Agency Pricing Models and When to Use Them",
+      "slug": "agency-pricing-models",
+      "angle": "Compare retainer, project‑based, performance‑based, and hybrid pricing to help agencies choose the right model for clients"
+    },
+    {
+      "keyword": "how to start a creative agency",
+      "title": "Step‑by‑Step Guide to Launching a Digital‑First Creative Agency",
+      "slug": "start-creative-agency",
+      "angle": "Provide a roadmap—from niche selection to service packaging and AI‑enhanced offerings—for founders launching a new agency"
+    },
+    {
+      "keyword": "what is brand storytelling",
+      "title": "The Power of Brand Storytelling: A Playbook for Agencies",
+      "slug": "brand-storytelling-playbook",
+      "angle": "Explain how agencies can craft compelling brand narratives that drive engagement and differentiate clients in crowded markets"
+    },
+    {
+      "keyword": "best creative agency websites 2026",
+      "title": "Top Creative Agency Website Designs to Inspire Your 2026 Refresh",
+      "slug": "best-creative-agency-websites-2026",
+      "angle": "Analyze standout agency sites, highlighting UI/UX trends and AI‑driven features that attract and retain high‑value clients"
+    }
+  ],
   "posts": []
 }
