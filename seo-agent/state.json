@@ -1,0 +1,30 @@
+{
+  "lastAudit": "2026-11-17T15:18:57.172Z",
+  "lastKeywords": "2026-11-18T05:16:15.177Z",
+  "lastPost": "2026-11-18T05:52:50.612Z",
+  "pausedUntil": null,
+  "lastScore": 100,
+  "pending": null,
+  "topicQueue": [
+    {
+      "keyword": "what is brand storytelling",
+      "title": "The Power of Brand Storytelling: A Playbook for Agencies",
+      "slug": "brand-storytelling-playbook",
+      "angle": "Explain how agencies can craft compelling brand narratives that drive engagement and differentiate clients in crowded markets"
+    },
+    {
+      "keyword": "best creative agency websites 2026",
+      "title": "Top Creative Agency Website Designs to Inspire Your 2026 Refresh",
+      "slug": "best-creative-agency-websites-2026",
+      "angle": "Analyze standout agency sites, highlighting UI/UX trends and AI‑driven features that attract and retain high‑value clients"
+    }
+  ],
+  "posts": [
+    {
+      "slug": "start-creative-agency",
+      "title": "Step‑by‑Step Guide to Launching a Digital‑First Creative Agency",
+      "date": "2026-11-18T05:52:50.611Z",
+      "keyword": "how to start a creative agency"
+    }
+  ]
+}
