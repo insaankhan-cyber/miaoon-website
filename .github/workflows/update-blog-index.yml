@@ -1,5 +1,5 @@
 
-name: Update Blog Index
+name: Update Blog Index and Sitemap
 
 on:
   push:
@@ -8,7 +8,9 @@ on:
     paths:
       - "*.html"
       - "blog/posts/**"
+      - "seo-agent/state.json"
       - "scripts/build-blog-index.py"
+      - "scripts/build-sitemap.py"
       - "blog/catalog-include.txt"
       - "blog/catalog-exclude.txt"
 
@@ -18,35 +20,67 @@ permissions:
   contents: write
 
 concurrency:
-  group: miaoon-blog-index
+  group: miaoon-content-indexing
   cancel-in-progress: false
 
 jobs:
-  update-blog-index:
+  update:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
 
     steps:
       - name: Checkout website repository
         uses: actions/checkout@v4
         with:
+          ref: main
           fetch-depth: 0
+          persist-credentials: true
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
-      - name: Generate blog directory
+      - name: Verify required scripts
+        run: |
+          test -f scripts/build-blog-index.py
+          test -f scripts/build-sitemap.py
+
+      - name: Update blog directory
         run: python scripts/build-blog-index.py
 
-      - name: Commit updated blog directory
+      - name: Update XML sitemap
+        run: python scripts/build-sitemap.py
+
+      - name: Validate generated sitemap
+        run: |
+          python -c "import xml.etree.ElementTree as ET; ET.parse('sitemap.xml'); print('Sitemap XML valid')"
+
+      - name: Commit blog index and sitemap together
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add blog/index.html
+
+          git add blog/index.html sitemap.xml
+
           if git diff --cached --quiet; then
-            echo "Blog directory already up to date."
+            echo "Blog index and sitemap already up to date."
           else
-            git commit -m "Auto-update Miaoon blog directory"
-            git push
+            git commit -m "Auto-update Miaoon blog index and sitemap"
+            git pull --rebase origin main
+            git push origin HEAD:main
           fi
+
+      - name: Show sitemap statistics
+        run: |
+          python - <<'PY'
+          import xml.etree.ElementTree as ET
+
+          root = ET.parse('sitemap.xml').getroot()
+          ns = {'s': 'http://www.sitemaps.org/schemas/sitemap/0.9'}
+          urls = root.findall('.//s:loc', ns)
+
+          print(f'Total sitemap URLs: {len(urls)}')
+          print('Blog directory: https://www.miaoon.in/blog/')
+          print('Sitemap: https://www.miaoon.in/sitemap.xml')
+          PY
