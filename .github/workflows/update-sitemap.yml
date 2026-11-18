@@ -1,0 +1,41 @@
+name: Update Miaoon Sitemap
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'blog/index.html'
+      - 'sitemap.xml'
+      - 'scripts/build-sitemap.py'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: miaoon-sitemap
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Reconcile sitemap with the blog directory
+        run: python scripts/build-sitemap.py
+      - name: Commit updated sitemap
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add sitemap.xml
+          if ! git diff --cached --quiet; then
+            git commit -m 'Update sitemap from published blog directory'
+            git push
+          else
+            echo 'Sitemap already up to date'
+          fi
