@@ -134,4 +134,8 @@
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
+  <url>
+    <loc>https://miaoon.in/what-is-agentic-ai-as-a-service-and-how-does-it-work.html</loc>
+    <changefreq>monthly</changefreq>
+  </url>
 </urlset>
