@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Miaoon support handoffs</title>
+<style>
+:root{--bg:#0a0a0a;--panel:#141414;--line:#2a2a2a;--text:#f2efe9;--muted:#9a968e;--accent:#e7d9bd}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 system-ui,sans-serif}
+header{padding:16px 20px;border-bottom:1px solid var(--line);display:flex;gap:12px;align-items:center;justify-content:space-between}
+h1{font-size:17px;margin:0}main{display:grid;grid-template-columns:minmax(260px,360px) 1fr;min-height:calc(100vh - 58px)}
+@media(max-width:760px){main{grid-template-columns:1fr}}
+#list{border-right:1px solid var(--line);overflow:auto}
+.item{display:block;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--line);color:inherit;padding:12px 16px;cursor:pointer}
+.item:hover,.item.on{background:var(--panel)}.item small{color:var(--muted);display:block}
+.tag{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:0 8px;font-size:12px;margin-right:6px}.tag.complaint,.tag.urgent{border-color:#c98a8a;color:#e6b0b0}.tag.lead{border-color:var(--accent);color:var(--accent)}
+#view{padding:18px 20px;display:flex;flex-direction:column;gap:12px}
+.sum{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.log{display:flex;flex-direction:column;gap:8px;max-height:46vh;overflow:auto}
+.m{max-width:80%;padding:8px 12px;border-radius:12px;white-space:pre-wrap;background:var(--panel);border:1px solid var(--line)}
+.m.user{align-self:flex-start}.m.bot{align-self:flex-end;color:var(--muted)}.m.human{align-self:flex-end;background:var(--accent);color:#0a0a0a;border-color:var(--accent)}
+form{display:flex;gap:8px}input,textarea{flex:1;background:var(--panel);border:1px solid var(--line);border-radius:9px;color:var(--text);padding:10px 12px;font:inherit}
+button.p{background:var(--accent);color:#0a0a0a;border:0;border-radius:9px;padding:0 16px;font-weight:600;cursor:pointer}button.s{background:none;border:1px solid var(--line);color:var(--text);border-radius:9px;padding:8px 14px;cursor:pointer}
+button:focus-visible,input:focus-visible,.item:focus-visible{outline:2px solid var(--accent);outline-offset:2px}.muted{color:var(--muted)}
+</style></head><body>
+<header><h1>Handoffs from the support agent</h1><label class="muted"><input type="checkbox" id="all"> show closed</label></header>
+<main><nav id="list" aria-label="Handoffs"></nav><section id="view"><p class="muted">Select a handoff to read the chat and reply. Replies appear live in the customer's chat window.</p></section></main>
+<script>
+var tok=sessionStorage.getItem("tok")||prompt("Admin token");if(tok)sessionStorage.setItem("tok",tok);
+var cur=null;
+function api(p,body){return fetch(p,{method:body?"POST":"GET",headers:{"X-Admin-Token":tok,"Content-Type":"application/json"},body:body?JSON.stringify(body):undefined}).then(function(r){if(r.status==401){sessionStorage.removeItem("tok");alert("Wrong token");throw 0}return r.json()})}
+function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e}
+function loadList(){api("/api/admin/handoffs"+(document.getElementById("all").checked?"":"?status=open")).then(function(d){
+ var L=document.getElementById("list");L.replaceChildren();
+ if(!d.handoffs.length)L.appendChild(el("p","muted","No open handoffs."));
+ d.handoffs.forEach(function(h){var b=el("button","item"+(cur==h.sid?" on":""));b.appendChild(el("span","tag "+h.kind,h.kind));b.appendChild(el("b",0,h.contact||"No contact yet"));
+  b.appendChild(el("small",0,new Date(h.ts*1000).toLocaleString()+(h.status=="closed"?" · closed":"")));b.appendChild(el("small",0,h.summary.slice(0,90)));
+  b.onclick=function(){cur=h.sid;show(h);loadList()};L.appendChild(b)})}).catch(function(){})}
+function show(h){var V=document.getElementById("view");V.replaceChildren();
+ var s=el("div","sum");s.appendChild(el("b",0,h.kind+" · "+(h.contact||"contact not shared yet")));s.appendChild(el("p",0,h.summary));s.appendChild(el("small","muted","Why: "+h.reason));V.appendChild(s);
+ var log=el("div","log");V.appendChild(log);
+ api("/api/admin/conv?sid="+h.sid).then(function(d){d.messages.forEach(function(m){log.appendChild(el("div","m "+m.role,m.text))});log.scrollTop=log.scrollHeight});
+ var f=el("form");var i=el("input");i.placeholder="Reply to customer";i.setAttribute("aria-label","Reply");var b=el("button","p","Send");f.append(i,b);
+ f.onsubmit=function(e){e.preventDefault();if(!i.value.trim())return;api("/api/admin/reply",{sid:h.sid,text:i.value}).then(function(){log.appendChild(el("div","m human",i.value));i.value="";log.scrollTop=log.scrollHeight})};V.appendChild(f);
+ var c=el("button","s","Mark resolved (agent takes over again)");c.onclick=function(){api("/api/admin/close",{sid:h.sid}).then(function(){cur=null;V.replaceChildren(el("p","muted","Closed."));loadList()})};V.appendChild(c)}
+document.getElementById("all").onchange=loadList;loadList();setInterval(loadList,15000);
+</script></body></html>
