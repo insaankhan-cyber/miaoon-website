@@ -226,9 +226,6 @@
     <loc>https://www.miaoon.in/how-can-businesses-optimise-content-for-google-s-ai-overviews.html</loc>
   </url>
   <url>
-    <loc>https://www.miaoon.in/how-to-write-a-creative-brief-that-produces-better-campaigns.html</loc>
-  </url>
-  <url>
     <loc>https://www.miaoon.in/it-s-high-time-businesses-train-ai-agents-or-collapse.html</loc>
   </url>
   <url>
@@ -248,9 +245,6 @@
   </url>
   <url>
     <loc>https://www.miaoon.in/paid-advertising.html</loc>
-  </url>
-  <url>
-    <loc>https://www.miaoon.in/performance-marketing-strategy-for-b2b-service-businesses.html</loc>
   </url>
   <url>
     <loc>https://www.miaoon.in/plg-vs-demand-generation.html</loc>
@@ -301,9 +295,6 @@
     <loc>https://www.miaoon.in/web-development.html</loc>
   </url>
   <url>
-    <loc>https://www.miaoon.in/website-redesign-checklist-for-a-b2b-service-brand.html</loc>
-  </url>
-  <url>
     <loc>https://www.miaoon.in/wellness-brands-audience-without-influencers.html</loc>
   </url>
   <url>
@@ -317,5 +308,21 @@
   </url>
   <url>
     <loc>https://www.miaoon.in/zero-click-searches-visibility.html</loc>
+  </url>
+  <url>
+    <loc>https://miaoon.in/how-to-write-a-creative-brief-that-produces-better-campaigns.html</loc>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://miaoon.in/performance-marketing-strategy-for-b2b-service-businesses.html</loc>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://miaoon.in/website-redesign-checklist-for-a-b2b-service-brand.html</loc>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://miaoon.in/how-to-build-a-recurring-revenue-model-for-a-creative-agency.html</loc>
+    <changefreq>monthly</changefreq>
   </url>
 </urlset>
