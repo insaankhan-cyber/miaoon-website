@@ -1,0 +1,179 @@
+"""Claude is mocked (no network in CI). These tests check what we send to Claude and how we act on its replies."""
+import os, sys, json, tempfile, threading, unittest, urllib.request
+os.environ["DB_PATH"] = os.path.join(tempfile.mkdtemp(), "t.db")
+os.environ["ANTHROPIC_API_KEY"] = "test-key"
+os.environ["ADMIN_TOKEN"] = "secret123"
+os.environ["RATE_PER_MIN"] = "1000"
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+import agent, store, server  # noqa: E402
+
+n = [0]
+def sid():
+    n[0] += 1
+    return f"test-session-{n[0]}"
+
+def text(t): return [{"type": "text", "text": t}]
+def handoff(msg, **inp):
+    return ([{"type": "text", "text": msg}] if msg else []) + [{"type": "tool_use", "id": "t1", "name": "hand_off_to_team", "input": inp}]
+
+
+class Base(unittest.TestCase):
+    def setUp(self):
+        self.orig, self.calls = agent._api, []
+        self.reply = text("Default reply.")
+        def fake(system, messages, max_tokens=600, tools=None):
+            self.calls.append({"system": system, "messages": messages, "tools": tools})
+            return self.reply
+        agent._api = fake
+    def tearDown(self): agent._api = self.orig
+
+
+class Conversation(Base):
+    def test_claude_gets_voice_knowledge_tool_and_user_text(self):
+        self.reply = text("We build brands and AI agents from Delhi.")
+        r = agent.respond(sid(), "hey, what exactly is your company about?")
+        self.assertEqual(r["reply"], "We build brands and AI agents from Delhi.")
+        c = self.calls[0]
+        for must in ("Customer Support Agent", "Jamia Nagar", "NOT published", "Nordwind"):
+            self.assertIn(must, c["system"])
+        self.assertEqual(c["tools"][0]["name"], "hand_off_to_team")
+        self.assertEqual(c["messages"][-1], {"role": "user", "content": "hey, what exactly is your company about?"})
+
+    def test_memory_across_turns(self):
+        s = sid()
+        agent.respond(s, "I run a clothing brand")
+        self.reply = text("For a fashion brand, our Nordwind work may interest you.")
+        agent.respond(s, "which of your work is closest to mine?")
+        msgs = self.calls[-1]["messages"]
+        self.assertEqual([m["role"] for m in msgs], ["user", "assistant", "user"])
+        self.assertIn("clothing brand", msgs[0]["content"])
+
+    def test_no_voice_or_faq_files(self):
+        self.assertFalse(os.path.exists(os.path.join(agent.BASE, "data", "faq.txt")))
+
+
+class Handoff(Base):
+    def test_model_decided_handoff(self):
+        self.reply = handoff("Happy to get the team to scope that with you.", kind="lead", reason="Wants a website quote",
+                             summary="Visitor runs a bakery and wants a new e-commerce site. Asked for pricing, which is not published.")
+        s = sid(); r = agent.respond(s, "we need a new online store for our bakery, what would it cost?")
+        h = [x for x in store.handoffs() if x["sid"] == s][0]
+        self.assertEqual((r["status"], h["kind"]), ("human", "lead"))
+        self.assertIn("bakery", h["summary"])
+        self.assertTrue(r["reply"].startswith("Happy to get the team"))
+        self.assertIn("email or WhatsApp", r["reply"])
+
+    def test_hard_triggers_skip_the_model(self):
+        for t, kind in [("I want a refund, this is unacceptable", "complaint"), ("this is urgent, site is down", "urgent"), ("can I speak to a person", "support")]:
+            s = sid(); r = agent.respond(s, t)
+            self.assertEqual(r["status"], "human", t)
+            self.assertEqual([x for x in store.handoffs() if x["sid"] == s][0]["kind"], kind)
+        self.assertTrue(all(c["tools"] is None and c["system"].startswith("Summarise") for c in self.calls))  # only team summaries, no chat reply
+
+    def test_contact_capture_then_bot_stays_silent_until_resolved(self):
+        s = sid(); agent.respond(s, "I want a refund")
+        r = agent.respond(s, "reach me on riya@example.com")
+        self.assertIn("riya@example.com", r["reply"])
+        self.assertEqual([h for h in store.handoffs() if h["sid"] == s][0]["contact"], "riya@example.com")
+        self.calls.clear()
+        self.assertIn("added that to your case", agent.respond(s, "any update?")["reply"])
+        self.assertEqual(self.calls, [])
+        store.close_handoffs(s); self.reply = text("Back with the bot.")
+        self.assertEqual(agent.respond(s, "one more question")["reply"], "Back with the bot.")
+
+    def test_ai_down_hands_to_team_instead_of_failing(self):
+        agent._api = lambda *a, **k: None
+        s = sid(); r = agent.respond(s, "what services do you offer?")
+        self.assertEqual(r["status"], "human")
+        self.assertIn("trouble", r["reply"])
+        self.assertIn("unavailable", [h for h in store.handoffs() if h["sid"] == s][0]["reason"])
+
+    def test_empty_model_reply_is_handled(self):
+        self.reply = []
+        self.assertIn("tell me a bit more", agent.respond(sid(), "hmm")["reply"])
+
+
+class Providers(unittest.TestCase):
+    """Free providers (Gemini/Groq/Ollama) use the OpenAI-compatible API; check request shape and tool-call parsing."""
+    def run_with(self, provider, resp, **env):
+        import io
+        seen = {}
+        class R(io.BytesIO):
+            def __enter__(s): return s
+            def __exit__(s, *a): pass
+        def fake_open(req, timeout=0):
+            seen["url"], seen["auth"], seen["body"] = req.full_url, req.get_header("Authorization"), json.loads(req.data)
+            return R(json.dumps(resp).encode())
+        old = urllib.request.urlopen; urllib.request.urlopen = fake_open
+        saved = {k: os.environ.get(k) for k in ("LLM_PROVIDER", "LLM_API_KEY", "LLM_MODEL")}
+        os.environ["LLM_PROVIDER"] = provider; os.environ["LLM_API_KEY"] = "g-key"; os.environ.pop("LLM_MODEL", None)
+        try:
+            blocks = agent._api("SYS", [{"role": "user", "content": "hi"}], 100, agent.TOOLS)
+        finally:
+            urllib.request.urlopen = old
+            for k, v in saved.items():
+                os.environ.pop(k, None) if v is None else os.environ.__setitem__(k, v)
+        return blocks, seen
+
+    def test_gemini_text(self):
+        blocks, seen = self.run_with("gemini", {"choices": [{"message": {"content": "Hello from Gemini"}}]})
+        self.assertEqual(blocks, [{"type": "text", "text": "Hello from Gemini"}])
+        self.assertTrue(seen["url"].startswith("https://generativelanguage.googleapis.com/v1beta/openai/chat/completions"))
+        self.assertEqual(seen["auth"], "Bearer g-key")
+        self.assertEqual(seen["body"]["messages"][0], {"role": "system", "content": "SYS"})
+        self.assertEqual(seen["body"]["tools"][0]["function"]["name"], "hand_off_to_team")
+
+    def test_tool_call_becomes_handoff(self):
+        resp = {"choices": [{"message": {"content": "Bringing the team in.", "tool_calls": [{"id": "c1", "function": {"name": "hand_off_to_team", "arguments": json.dumps({"kind": "lead", "reason": "quote", "summary": "Wants a quote"})}}]}}]}
+        blocks, _ = self.run_with("groq", resp)
+        self.assertEqual(blocks[1]["input"]["kind"], "lead")
+        self.assertEqual(blocks[0]["type"], "text")
+
+    def test_ollama_needs_no_key(self):
+        os.environ["LLM_PROVIDER"] = "ollama"
+        try: self.assertTrue(agent.llm_configured())
+        finally: os.environ.pop("LLM_PROVIDER")
+
+
+class Http(Base):
+    @classmethod
+    def setUpClass(cls):
+        cls.srv = server.make_server(0); cls.port = cls.srv.server_address[1]
+        threading.Thread(target=cls.srv.serve_forever, daemon=True).start()
+    @classmethod
+    def tearDownClass(cls):
+        cls.srv.shutdown(); cls.srv.server_close()
+
+    def call(self, path, body=None, token=None, origin=None):
+        h = {"Content-Type": "application/json"}
+        if token: h["X-Admin-Token"] = token
+        if origin: h["Origin"] = origin
+        req = urllib.request.Request(f"http://127.0.0.1:{self.port}{path}", json.dumps(body).encode() if body is not None else None, h)
+        try:
+            with urllib.request.urlopen(req) as r: return r.status, json.load(r) if "json" in r.headers["Content-Type"] else r.read(), r.headers
+        except urllib.error.HTTPError as e: return e.code, json.load(e), e.headers
+
+    def test_end_to_end(self):
+        s = sid(); self.reply = text("We're in Jamia Nagar, Delhi.")
+        c, d, h = self.call("/api/chat", {"sid": s, "message": "where are you?"}, origin="https://miaoon.in")
+        self.assertEqual((c, d["reply"], h["Access-Control-Allow-Origin"]), (200, "We're in Jamia Nagar, Delhi.", "https://miaoon.in"))
+        self.assertIsNone(self.call("/api/chat", {"sid": s, "message": "hi"}, origin="https://evil.example")[2]["Access-Control-Allow-Origin"])
+        self.call("/api/chat", {"sid": s, "message": "I want to talk to a human"})
+        self.assertEqual(self.call("/api/admin/handoffs")[0], 401)
+        mine = [x for x in self.call("/api/admin/handoffs", token="secret123")[1]["handoffs"] if x["sid"] == s]
+        self.assertEqual(len(mine), 1)
+        self.call("/api/admin/reply", {"sid": s, "text": "Hi, Aisha here."}, token="secret123")
+        d = self.call(f"/api/poll?sid={s}&after=0")[1]
+        self.assertEqual(([m["text"] for m in d["messages"]], d["status"]), (["Hi, Aisha here."], "human"))
+        self.call("/api/admin/close", {"sid": s}, token="secret123")
+        self.assertEqual(self.call(f"/api/history?sid={s}")[1]["status"], "bot")
+
+    def test_validation_and_static(self):
+        self.assertEqual(self.call("/api/chat", {"sid": "x", "message": "hi"})[0], 400)
+        self.assertEqual(self.call("/api/chat", {"sid": "valid-sid-123", "message": ""})[0], 400)
+        self.assertIn(b"attachShadow", self.call("/widget.js")[1])
+        self.assertTrue(self.call("/health")[1]["llm"])
+
+
+if __name__ == "__main__":
+    unittest.main(verbosity=1)
