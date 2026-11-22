@@ -10,9 +10,6 @@
     <loc>https://www.miaoon.in/aeo-vs-seo-vs-geo-what-marketers-need-to-know.html</loc>
   </url>
   <url>
-    <loc>https://www.miaoon.in/agency-retainer-pricing-models-scope-and-trade-offs.html</loc>
-  </url>
-  <url>
     <loc>https://www.miaoon.in/agency-website-strategy.html</loc>
   </url>
   <url>
@@ -205,9 +202,6 @@
     <loc>https://www.miaoon.in/d2c-brands-customer-loyalty-beyond-discounts.html</loc>
   </url>
   <url>
-    <loc>https://www.miaoon.in/digital-marketing-strategy-for-automobile-dealerships.html</loc>
-  </url>
-  <url>
     <loc>https://www.miaoon.in/digital-marketing-trends-2027-stay-competitive.html</loc>
   </url>
   <url>
@@ -244,13 +238,7 @@
     <loc>https://www.miaoon.in/how-to-automate-a-marketing-campaign-from-brief-to-reporting.html</loc>
   </url>
   <url>
-    <loc>https://www.miaoon.in/how-to-build-a-full-funnel-paid-media-plan.html</loc>
-  </url>
-  <url>
     <loc>https://www.miaoon.in/how-to-build-a-recurring-revenue-model-for-a-creative-agency.html</loc>
-  </url>
-  <url>
-    <loc>https://www.miaoon.in/how-to-build-a-service-website-that-converts.html</loc>
   </url>
   <url>
     <loc>https://www.miaoon.in/how-to-build-a-topic-cluster-for-an-agency-website.html</loc>
@@ -353,5 +341,25 @@
   </url>
   <url>
     <loc>https://www.miaoon.in/zero-click-searches-visibility.html</loc>
+  </url>
+  <url>
+    <loc>https://miaoon.in/how-to-build-a-full-funnel-paid-media-plan.html</loc>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://miaoon.in/how-to-build-a-service-website-that-converts.html</loc>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://miaoon.in/agency-retainer-pricing-models-scope-and-trade-offs.html</loc>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://miaoon.in/digital-marketing-strategy-for-automobile-dealerships.html</loc>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://miaoon.in/how-to-choose-an-agentic-ai-service-provider.html</loc>
+    <changefreq>monthly</changefreq>
   </url>
 </urlset>
