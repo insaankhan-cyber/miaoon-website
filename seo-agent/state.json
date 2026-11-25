@@ -1,5 +1,5 @@
 {
-  "lastAudit": "2026-11-17T15:18:57.172Z",
+  "lastAudit": "2026-11-25T03:28:27.445Z",
   "lastKeywords": "2026-11-18T05:16:15.177Z",
   "lastPost": "2026-11-18T05:52:50.612Z",
   "pausedUntil": null,
@@ -304,6 +304,15 @@
       "keyword": "GaaS pricing models",
       "date": "2026-11-24T03:21:08.805Z",
       "publishDay": "2026-11-24"
+    },
+    {
+      "id": "MIA-032",
+      "batchId": "miaoon-30-day-150-v1",
+      "slug": "ai-agents-for-lead-qualification-and-routing",
+      "title": "AI Agents for Lead Qualification and Routing",
+      "keyword": "AI lead qualification agents",
+      "date": "2026-11-25T03:28:33.004Z",
+      "publishDay": "2026-11-25"
     }
   ]
 }
