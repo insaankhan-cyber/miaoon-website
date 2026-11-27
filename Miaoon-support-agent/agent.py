@@ -189,8 +189,10 @@ def _reply(sid, text):
 
 
 # CRM pilot: explicit visitor permission, sales handoffs only.
+SALES = re.compile(r"\b(?:interested in|looking for|need|want|require|quote|pricing|hire|enquire|inquire)\b.{0,100}\b(?:digital marketing|lead generation|seo|branding|website|ai agents?|automation|advertising|social media|services)\b", re.I)
+
 def crm_enabled():
-    return os.getenv("CHATBOT_CAPTURE_ENABLED", "").lower() == "true" and len(os.getenv("LEAD_CAPTURE_API_KEY", "").strip()) >= 32
+    return os.getenv("CHATBOT_CAPTURE_ENABLED", "").strip().lower() == "true" and len(os.getenv("LEAD_CAPTURE_API_KEY", "").strip()) >= 32
 
 
 def crm_sales_contact(sid):
@@ -227,9 +229,10 @@ def crm_capture(sid):
             result = json.load(response)
         if result.get("status") not in ("created", "duplicate") or not result.get("lead_id"):
             raise ValueError("Unconfirmed capture")
+        print("Chatbot CRM capture:", result["status"], flush=True)
         return "Thank you. Your sales enquiry is saved in our CRM for the team to follow up."
     except Exception as exc:
-        print("Chatbot CRM capture unconfirmed:", type(exc).__name__)
+        print("Chatbot CRM capture unconfirmed:", type(exc).__name__, getattr(exc, "code", ""), flush=True)
         return "CRM submission could not be confirmed. Your support enquiry is still saved. Reply YES CRM again to retry."
 
 
@@ -248,7 +251,7 @@ def respond(sid, text):
     text = re.sub(r"[\x00-\x08\x0b-\x1f]", "", text).strip()[:1000]
     c = store.conv(sid)
     store.add_msg(sid, "user", text)
-    if text.casefold() == "yes crm" and any(role == "bot" and "reply YES CRM" in msg for role, msg in store.history(sid, 20)):
+    if re.fullmatch(r"yes\s+crm[.!]?", text, re.I) and any(role == "bot" and "reply YES CRM" in msg for role, msg in store.history(sid, 20)):
         result = crm_capture(sid)
         if result is not None:
             return _reply(sid, result)
@@ -264,6 +267,9 @@ def respond(sid, text):
     kind = trigger(text)
     if kind:
         return escalate(sid, kind, f"Matched {kind} keywords")
+    if crm_enabled() and SALES.search(text):
+        print("Chatbot CRM: sales enquiry detected", flush=True)
+        return escalate(sid, "lead", "Explicit sales enquiry", summary="Visitor requested information about Miaoon services.")
     out = call_llm(sid)
     if out is None:
         return escalate(sid, "support", "AI service unavailable (check API key or rate limit)",
